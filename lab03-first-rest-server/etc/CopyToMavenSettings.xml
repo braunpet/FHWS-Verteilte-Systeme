@@ -1,0 +1,14 @@
+<settings>
+	<servers>
+		<server>
+			<id>tomcat-localhost</id>
+			<username>tcmanager</username>
+			<password>test</password>
+		</server>
+		<server>
+			<id>tomcat-staging</id>
+			<username>USERNAME</username>
+			<password>PASSWORD</password>
+		</server>
+	</servers>
+</settings>
