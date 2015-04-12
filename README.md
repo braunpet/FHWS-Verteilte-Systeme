@@ -1,4 +1,4 @@
-FHWS-API-Programmierung
+FHWS Verteilte Systeme
 =======================
 
-Beispiele aus der Vorlesung zur Programmierung von REST APIs
+Some examples from the course Parallel and Distributed Systems.
