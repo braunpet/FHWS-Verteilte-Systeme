@@ -1,0 +1,9 @@
+<settings>
+	<servers>
+		<server>
+			<id>tomcat-localhost</id>
+			<username>CHANGEME</username>
+			<password>CHANGEME</password>
+		</server>
+	</servers>
+</settings>

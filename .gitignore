@@ -1,6 +1,7 @@
 *.class
 
 .settings/
+.idea/
 target/
 
 # Package Files #
