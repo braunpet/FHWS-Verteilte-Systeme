@@ -1,9 +1,6 @@
 package de.fhws.applab.usermanagement.api;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
+import com.wordnik.swagger.annotations.*;
 import de.fhws.applab.restserverspi.api.annotations.UserAuthorization;
 import de.fhws.applab.usermanagement.api.responses.*;
 import de.fhws.applab.usermanagement.models.User;
@@ -16,6 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 @Path( "/users" )
+@Api(value = "/users", description = "User Management API")
 public class UsersService
 {
 	@Context
@@ -29,9 +27,10 @@ public class UsersService
 	@UserAuthorization
 	@ApiOperation(
 		value = "Get a list of all users",
-		notes = "The result can be filtered by name and date of creation", response = User[].class )
+		notes = "Authentication required. Pagination can be used by offset and size query parameters", response = User[].class )
 	@ApiResponses( {
-		@ApiResponse( code = 200, message = "Response contains a collection of users" ) } )
+		@ApiResponse( code = 200, message = "Response contains a collection of users" ),
+		@ApiResponse( code = 500, message = "Internal server error" ) } )
 	public Response getAllUser(
 		@ApiParam( value = "Defines the number of requested elements", required = false, defaultValue = "10" )
 		@DefaultValue( "10" ) @QueryParam( "size" ) int size,
@@ -49,7 +48,16 @@ public class UsersService
 	@Produces( MediaType.APPLICATION_JSON )
 	@Path( "{id: \\d+}" )
 	@UserAuthorization
-	public Response getUser( @PathParam( "id" ) long userId )
+	@ApiOperation(
+		value = "Get a single user by id",
+		notes = "Authentication required.", response = User.class )
+	@ApiResponses( {
+		@ApiResponse( code = 200, message = "Response contains the requested user" ),
+		@ApiResponse( code = 404, message = "The requested user does not exist" ),
+		@ApiResponse( code = 500, message = "Internal server error" ) } )
+	public Response getUser(
+		@ApiParam( value = "The id of the user", required = true )
+		@PathParam( "id" ) long userId )
 	{
 		return SingleUserResponse.newBuilder( uriInfo ).forUserWithId( userId ).requestedByUser(
 			requestContext ).build( );
