@@ -5,7 +5,7 @@ import com.owlike.genson.annotation.JsonIgnore;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 import de.fhws.applab.restserverspi.models.AbstractModel;
-import de.fhws.applab.usermanagement.api.converters.LinkConverter;
+import de.fhws.applab.restserverspi.api.converters.LinkConverter;
 import org.glassfish.jersey.linking.InjectLink;
 
 import javax.ws.rs.core.Link;

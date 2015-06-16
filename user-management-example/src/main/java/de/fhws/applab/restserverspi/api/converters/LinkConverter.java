@@ -1,4 +1,4 @@
-package de.fhws.applab.usermanagement.api.converters;
+package de.fhws.applab.restserverspi.api.converters;
 
 import com.owlike.genson.Context;
 import com.owlike.genson.Converter;

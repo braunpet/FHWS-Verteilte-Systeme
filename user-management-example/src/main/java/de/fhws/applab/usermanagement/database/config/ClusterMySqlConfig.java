@@ -3,12 +3,16 @@ package de.fhws.applab.usermanagement.database.config;
 import de.fhws.applab.restserverspi.database.config.MySqlConfig;
 
 /**
- * Created by braunpet on 15.06.15.
+ * Created by braunpet on 16.06.15.
  */
 public class ClusterMySqlConfig extends MySqlConfig
 {
-	public ClusterMySqlConfig( )
+	private final static String USER = "studadmin";
+
+	private final static String PASS = "studpasswd";
+
+	public ClusterMySqlConfig( String ipAddress )
 	{
-		super( "10.10.34.2", "studadmin", "studpasswd" );
+		super( ipAddress, USER, PASS );
 	}
 }

@@ -36,7 +36,14 @@ public class MasterSlavePersistency
 
 	public IPersistency getSlave()
 	{
-		return this.roundRobinBuffer.next();
+		if( this.slaves.isEmpty() )
+		{
+			return this.master;
+		}
+		else
+		{
+			return this.roundRobinBuffer.next( );
+		}
 	}
 
 	public static class MasterSlavePersistencyBuilder

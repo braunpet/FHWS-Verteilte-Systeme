@@ -20,7 +20,7 @@ public class MySqlConfigDispatcher
 
 		if( host.startsWith( CLUSTER_SERVER ))
 		{
-			return new ClusterMySqlConfig(  );
+			return new ClusterMySqlConfig( host );
 		}
 
 		return new DefaultMySqlConfig( );
