@@ -17,12 +17,16 @@ public class DataAccessObjectsFactory
 		return instance;
 	}
 
+	private UserDAO userDAO;
+
 	private DataAccessObjectsFactory()
-	{}
+	{
+		this.userDAO = new UserDAOImpl();
+	}
 
 	public UserDAO createUserDAO( )
 	{
-		return new UserDAOImpl();
+		return this.userDAO;
 	}
 
 }

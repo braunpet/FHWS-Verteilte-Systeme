@@ -1,5 +1,6 @@
 package de.fhws.applab.usermanagement.database.dao;
 
+import de.fhws.applab.restserverspi.database.IPersistency;
 import de.fhws.applab.usermanagement.models.User;
 import de.fhws.applab.restserverspi.database.dao.AbstractLoadSingleByQueryOperation;
 
@@ -13,8 +14,9 @@ import static de.fhws.applab.usermanagement.database.tables.UserTable.*;
  */
 public class LoadSingleUserByEmailAndPassword extends AbstractLoadSingleByQueryOperation<QueryByEmailAndPassword,User>
 {
-	public LoadSingleUserByEmailAndPassword( )
+	public LoadSingleUserByEmailAndPassword( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	@Override protected String createSQLStatement( )

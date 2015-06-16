@@ -1,5 +1,6 @@
 package de.fhws.applab.usermanagement.database.dao;
 
+import de.fhws.applab.restserverspi.database.IPersistency;
 import de.fhws.applab.usermanagement.database.tables.UserTable;
 import de.fhws.applab.usermanagement.models.User;
 import de.fhws.applab.restserverspi.database.dao.AbstractSaveOperation;
@@ -11,6 +12,11 @@ import static de.fhws.applab.usermanagement.database.tables.UserTable.*;
  */
 public class SaveUserOperation extends AbstractSaveOperation<User>
 {
+	public SaveUserOperation( IPersistency persistency )
+	{
+		super( persistency );
+	}
+
 	@Override protected String createSQLStatement( )
 	{
 		final StringBuffer sqlStmt = new StringBuffer( );

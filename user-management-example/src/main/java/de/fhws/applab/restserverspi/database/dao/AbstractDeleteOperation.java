@@ -1,5 +1,7 @@
 package de.fhws.applab.restserverspi.database.dao;
 
+import de.fhws.applab.restserverspi.database.IPersistency;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,8 +11,9 @@ import java.sql.Statement;
  */
 public abstract class AbstractDeleteOperation extends AbstractDatabaseOperation<Long,Void>
 {
-	public AbstractDeleteOperation( )
+	public AbstractDeleteOperation( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	@Override protected ResultSet executeSQLStatement( Statement sqlStatement, String sql ) throws SQLException

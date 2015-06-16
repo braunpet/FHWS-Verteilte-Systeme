@@ -1,5 +1,6 @@
 package de.fhws.applab.usermanagement.database.dao;
 
+import de.fhws.applab.restserverspi.database.IPersistency;
 import de.fhws.applab.usermanagement.database.tables.UserTable;
 import de.fhws.applab.restserverspi.database.dao.AbstractDeleteOperation;
 
@@ -8,8 +9,9 @@ import de.fhws.applab.restserverspi.database.dao.AbstractDeleteOperation;
  */
 public class DeleteUserOperation extends AbstractDeleteOperation
 {
-	public DeleteUserOperation( )
+	public DeleteUserOperation( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	@Override protected String createSQLStatement( )

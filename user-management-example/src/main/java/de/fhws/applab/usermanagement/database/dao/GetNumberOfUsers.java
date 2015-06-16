@@ -1,6 +1,7 @@
 package de.fhws.applab.usermanagement.database.dao;
 
 import de.fhws.applab.restserverspi.database.DatabaseException;
+import de.fhws.applab.restserverspi.database.IPersistency;
 import de.fhws.applab.usermanagement.database.tables.UserTable;
 import de.fhws.applab.restserverspi.database.dao.AbstractGetTotalSizeOfTable;
 
@@ -9,8 +10,9 @@ import de.fhws.applab.restserverspi.database.dao.AbstractGetTotalSizeOfTable;
  */
 public class GetNumberOfUsers extends AbstractGetTotalSizeOfTable
 {
-	public GetNumberOfUsers( )
+	public GetNumberOfUsers( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	public Long execute() throws DatabaseException

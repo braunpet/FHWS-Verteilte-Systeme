@@ -1,5 +1,7 @@
 package de.fhws.applab.restserverspi.database.dao;
 
+import de.fhws.applab.restserverspi.database.IPersistency;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -8,8 +10,9 @@ import java.sql.SQLException;
  */
 public abstract class AbstractLoadSingleOperation<P,R> extends AbstractLoadOperation<P,R>
 {
-	public AbstractLoadSingleOperation( )
+	public AbstractLoadSingleOperation( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	@Override protected R processResultSet( ResultSet resultSet ) throws SQLException

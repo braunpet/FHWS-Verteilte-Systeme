@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public abstract class AbstractMySqlPersistency
+public abstract class AbstractMySqlPersistency implements IPersistency
 {
 	private static final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	private static String DATABASE_PORT = "3306";
@@ -98,7 +98,7 @@ public abstract class AbstractMySqlPersistency
 
 	protected abstract String getDatabaseName();
 
-	public final Connection getConnection( ) throws SQLException
+	@Override public final Connection getConnection( ) throws SQLException
 	{
 		return this.cpds.getConnection( );
 	}

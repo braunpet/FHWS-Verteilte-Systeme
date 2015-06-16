@@ -1,5 +1,6 @@
 package de.fhws.applab.usermanagement.database.dao;
 
+import de.fhws.applab.restserverspi.database.IPersistency;
 import de.fhws.applab.usermanagement.database.tables.UserTable;
 import de.fhws.applab.usermanagement.models.User;
 import de.fhws.applab.restserverspi.database.dao.AbstractLoadByIdOperation;
@@ -12,8 +13,9 @@ import java.sql.SQLException;
  */
 public class LoadSingleUserByIdOperation extends AbstractLoadByIdOperation<User>
 {
-	public LoadSingleUserByIdOperation( )
+	public LoadSingleUserByIdOperation( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	@Override protected String createSQLStatement( )

@@ -1,7 +1,7 @@
 package de.fhws.applab.restserverspi.database.dao;
 
 import de.fhws.applab.restserverspi.database.DatabaseException;
-import de.fhws.applab.usermanagement.database.MySqlPersistency;
+import de.fhws.applab.restserverspi.database.IPersistency;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,15 +13,15 @@ import java.sql.Statement;
  */
 public abstract class AbstractDatabaseOperation<P,R>
 {
-	protected final MySqlPersistency mysql;
+	protected final IPersistency mysql;
 
 	protected Connection databaseConnection;
 
 	protected P params;
 
-	protected AbstractDatabaseOperation()
+	protected AbstractDatabaseOperation( IPersistency persistency )
 	{
-		this.mysql = MySqlPersistency.getInstance();
+		this.mysql = persistency;
 	}
 
 	public final R execute( P param ) throws DatabaseException

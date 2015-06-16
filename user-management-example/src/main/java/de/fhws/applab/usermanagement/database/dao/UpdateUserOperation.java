@@ -1,5 +1,6 @@
 package de.fhws.applab.usermanagement.database.dao;
 
+import de.fhws.applab.restserverspi.database.IPersistency;
 import de.fhws.applab.usermanagement.database.tables.UserTable;
 import de.fhws.applab.usermanagement.models.User;
 import de.fhws.applab.restserverspi.database.dao.AbstractUpdateOperation;
@@ -11,8 +12,9 @@ import static de.fhws.applab.usermanagement.database.tables.UserTable.*;
  */
 public class UpdateUserOperation extends AbstractUpdateOperation<User>
 {
-	public UpdateUserOperation( )
+	public UpdateUserOperation( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	@Override protected String createSQLStatement( )

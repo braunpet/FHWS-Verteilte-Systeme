@@ -1,6 +1,7 @@
 package de.fhws.applab.usermanagement.database.dao;
 
 import de.fhws.applab.restserverspi.database.DatabaseException;
+import de.fhws.applab.restserverspi.database.IPersistency;
 import de.fhws.applab.usermanagement.database.tables.UserTable;
 import de.fhws.applab.usermanagement.models.User;
 import de.fhws.applab.restserverspi.database.dao.AbstractLoadCollectionOperation;
@@ -14,8 +15,9 @@ import java.util.Collection;
  */
 public class LoadAllUsersOperation extends AbstractLoadCollectionOperation<Void,User>
 {
-	public LoadAllUsersOperation( )
+	public LoadAllUsersOperation( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	public Collection<User> execute() throws DatabaseException

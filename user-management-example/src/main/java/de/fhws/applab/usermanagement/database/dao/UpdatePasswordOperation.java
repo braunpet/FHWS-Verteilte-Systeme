@@ -1,5 +1,6 @@
 package de.fhws.applab.usermanagement.database.dao;
 
+import de.fhws.applab.restserverspi.database.IPersistency;
 import de.fhws.applab.usermanagement.database.tables.UserTable;
 import de.fhws.applab.usermanagement.models.User;
 import de.fhws.applab.restserverspi.database.dao.AbstractUpdateOperation;
@@ -12,8 +13,9 @@ import static de.fhws.applab.usermanagement.database.tables.UserTable.COL_PASSWO
  */
 public class UpdatePasswordOperation extends AbstractUpdateOperation<User>
 {
-	public UpdatePasswordOperation( )
+	public UpdatePasswordOperation( IPersistency persistency )
 	{
+		super( persistency );
 	}
 
 	@Override protected String createSQLStatement( )
