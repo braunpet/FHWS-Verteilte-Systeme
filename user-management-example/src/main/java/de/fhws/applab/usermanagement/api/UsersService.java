@@ -27,7 +27,9 @@ public class UsersService
 	@UserAuthorization
 	@ApiOperation(
 		value = "Get a list of all users",
-		notes = "Authentication required. Pagination can be used by offset and size query parameters", response = User[].class )
+		notes = "Authentication required. Pagination can be used by offset and size query parameters",
+		response = User.class,
+		responseContainer = "Array" )
 	@ApiResponses( {
 		@ApiResponse( code = 200, message = "Response contains a collection of users" ),
 		@ApiResponse( code = 500, message = "Internal server error" ) } )
