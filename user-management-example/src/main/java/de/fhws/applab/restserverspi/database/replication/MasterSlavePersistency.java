@@ -17,7 +17,7 @@ public class MasterSlavePersistency
 
 	private CircleBuffer<IPersistency> roundRobinBuffer;
 
-	public MasterSlavePersistencyBuilder withMaster( IPersistency master )
+	public static MasterSlavePersistencyBuilder withMaster( IPersistency master )
 	{
 		return new MasterSlavePersistencyBuilder( master );
 	}

@@ -1,8 +1,12 @@
 package de.fhws.applab.usermanagement.database;
 
 import de.fhws.applab.usermanagement.database.dao.UserDAO;
-import de.fhws.applab.usermanagement.database.dao.UserDAOImpl;
+import de.fhws.applab.usermanagement.database.replication.MasterSlaveUserDAOImpl;
 import de.fhws.applab.usermanagement.distributedcache.DistributedUserCache;
+
+import static de.fhws.applab.restserverspi.database.replication.MasterSlavePersistency.withMaster;
+import static de.fhws.applab.usermanagement.database.MySqlPersistency.createPersistencyFor;
+import static de.fhws.applab.usermanagement.database.config.ClusterNodesMySqlConfig.clusterNode;
 
 public class DataAccessObjectsFactory
 {
@@ -24,8 +28,12 @@ public class DataAccessObjectsFactory
 
 	private DataAccessObjectsFactory()
 	{
-		this.userDAO = new UserDAOImpl();
+		//this.userDAO = new UserDAOImpl();
+		this.userDAO = new MasterSlaveUserDAOImpl(
+				withMaster( createPersistencyFor( clusterNode( 0 ) ) )
+				.andSlave( createPersistencyFor( clusterNode( 1 )) ).build() );
 		this.distributedUserCache = new DistributedUserCache( this.userDAO );
+
 	}
 
 	public UserDAO createUserDAO( )

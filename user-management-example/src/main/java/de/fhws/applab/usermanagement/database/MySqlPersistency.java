@@ -12,6 +12,11 @@ public class MySqlPersistency extends AbstractMySqlPersistency
 {
 	private static String DATABASE_NAME = "usermanagement";
 
+	public static final MySqlPersistency createPersistencyFor( MySqlConfig config )
+	{
+		return new MySqlPersistency( config );
+	}
+
 	public MySqlPersistency( MySqlConfig configuration )
 	{
 		this( configuration, false );
