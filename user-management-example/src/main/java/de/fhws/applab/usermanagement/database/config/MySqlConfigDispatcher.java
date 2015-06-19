@@ -14,13 +14,15 @@ public class MySqlConfigDispatcher
 
 	private static final String CLUSTER_SERVER = "10.10.34.";
 
+	private static final String MASTER_DB_SERVER = "10.10.34.2";
+
 	public static MySqlConfig getMySqlConfig( )
 	{
 		final String host = getHost( );
 
 		if( host.startsWith( CLUSTER_SERVER ))
 		{
-			return new ClusterMySqlConfig( host );
+			return new ClusterMySqlConfig( MASTER_DB_SERVER );
 		}
 
 		return new DefaultMySqlConfig( );
