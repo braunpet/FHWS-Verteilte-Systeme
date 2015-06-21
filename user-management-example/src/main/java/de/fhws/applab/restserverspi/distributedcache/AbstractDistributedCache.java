@@ -4,7 +4,7 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import de.fhws.applab.restserverspi.models.AbstractModel;
-import static de.fhws.applab.restserverspi.weblistener.StartAndStopHazelcast.*;
+import static de.fhws.applab.usermanagement.weblistener.StartAndStopUserManagement.*;
 
 /**
  * Created by braunpet on 18.06.15.
