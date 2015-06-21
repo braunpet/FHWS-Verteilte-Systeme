@@ -41,17 +41,22 @@ public class StartAndStopUserManagement implements ServletContextListener
 
 	private Config createHazelcastConfig()
 	{
+		System.out.println("C1");
 		Config returnValue = new Config();
 
 		GroupConfig groupConfig = returnValue.getGroupConfig( );
 		groupConfig.setName( "braun" );
 		groupConfig.setPassword( "braun-passwd" );
+		System.out.println("C2");
 
 		NetworkConfig network = returnValue.getNetworkConfig();
 		JoinConfig join = network.getJoin();
 		join.getMulticastConfig().setEnabled( true );
+		join.getMulticastConfig().setMulticastPort( 54327 );
+		System.out.println("C3");
 
 		returnValue.setInstanceName( USER_MANAGEMENT_HZ_INSTANCE );
+		System.out.println("C4");
 
 		return returnValue;
 	}
