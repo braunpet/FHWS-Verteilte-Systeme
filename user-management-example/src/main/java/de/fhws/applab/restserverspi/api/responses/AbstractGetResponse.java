@@ -8,7 +8,6 @@ import javax.ws.rs.core.UriInfo;
 
 public abstract class AbstractGetResponse extends AbstractResponse
 {
-
 	protected AbstractGetResponse( )
 	{}
 

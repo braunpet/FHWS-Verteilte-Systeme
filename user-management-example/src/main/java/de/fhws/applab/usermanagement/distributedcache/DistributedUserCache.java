@@ -30,26 +30,12 @@ public class DistributedUserCache extends AbstractDistributedCache<User> impleme
 
 	@Override public void updateUser( User user ) throws DatabaseException
 	{
-		this.removeFromCache( user.getId() );
-		this.database.updateUser( user );
+		new UpdateUserCallable( this.database, this.distributedCache, user.getId(), user ).call();
 	}
 
 	@Override public User loadUser( long userId ) throws DatabaseException
 	{
-		User user = this.getFromCache( userId );
-
-		if( user == null )
-		{
-			LOGGER.debug( "User with id " + userId + " not cached, loading from database" );
-			user = this.database.loadUser( userId );
-			this.putToCache( userId, user );
-		}
-		else
-		{
-			LOGGER.debug( "User with id " + userId + " is cached" );
-		}
-
-		return user;
+		return new LoadUserCallable( this.database, this.distributedCache, userId ).call();
 	}
 
 	@Override public Collection<User> loadAllUsers( ) throws DatabaseException
@@ -59,8 +45,7 @@ public class DistributedUserCache extends AbstractDistributedCache<User> impleme
 
 	@Override public void deleteUser( long userId ) throws DatabaseException
 	{
-		this.removeFromCache( userId );
-		this.database.deleteUser( userId );
+		new DeleteUserCallable( this.database, this.distributedCache, userId ).call();
 	}
 
 	@Override public User loadByEmail( String email, String password ) throws DatabaseException
@@ -82,4 +67,6 @@ public class DistributedUserCache extends AbstractDistributedCache<User> impleme
 	{
 		return "UserCache";
 	}
+
+
 }

@@ -7,6 +7,7 @@ import de.fhws.applab.usermanagement.models.User;
 
 import java.util.Collection;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by braunpet on 19.06.15.
@@ -26,18 +27,26 @@ public class LocalUserCache extends AbstractLocalCache<User> implements UserDAO
 		this.database.saveUser( user );
 	}
 
-	@Override public void updateUser( User user ) throws DatabaseException
+	@Override synchronized public void updateUser( User user ) throws DatabaseException
 	{
 		this.removeFromCache( user.getId() );
 		this.database.updateUser( user );
 	}
 
-	@Override public User loadUser( final long userId ) throws DatabaseException
+	@Override synchronized public User loadUser( final long userId ) throws DatabaseException
 	{
 		return this.getFromCache( userId, new Callable<User>() {
 			@Override public User call( ) throws Exception
 			{
-				return LocalUserCache.this.loadUser( userId );
+				User returnValue = LocalUserCache.this.database.loadUser( userId );
+				if( returnValue == null )
+				{
+					throw new ExecutionException( "requested user not found", null );
+				}
+				else
+				{
+					return returnValue;
+				}
 			}
 		} );
 	}
@@ -47,7 +56,7 @@ public class LocalUserCache extends AbstractLocalCache<User> implements UserDAO
 		return this.database.loadAllUsers();
 	}
 
-	@Override public void deleteUser( long userId ) throws DatabaseException
+	@Override synchronized public void deleteUser( long userId ) throws DatabaseException
 	{
 		this.removeFromCache( userId );
 		this.database.deleteUser( userId );
