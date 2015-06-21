@@ -1,9 +1,6 @@
 package de.fhws.applab.usermanagement.weblistener;
 
-import com.hazelcast.config.Config;
-import com.hazelcast.config.GroupConfig;
-import com.hazelcast.config.JoinConfig;
-import com.hazelcast.config.NetworkConfig;
+import com.hazelcast.config.*;
 import com.hazelcast.core.Hazelcast;
 import de.fhws.applab.usermanagement.database.MySqlPersistency;
 
@@ -22,16 +19,8 @@ public class StartAndStopUserManagement implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent event)
 	{
-		try
-		{
-			//Hazelcast.getOrCreateHazelcastInstance( createHazelcastConfig( ) );
-			Hazelcast.newHazelcastInstance();
-		}
-		catch( Throwable t )
-		{
-			System.out.println( t.getMessage() );
-			t.printStackTrace();
-		}
+		Hazelcast.getOrCreateHazelcastInstance( createHazelcastConfig( ) );
+		//Hazelcast.newHazelcastInstance();
 	}
 
 	@Override
@@ -42,16 +31,7 @@ public class StartAndStopUserManagement implements ServletContextListener
 
 	private Config createHazelcastConfig()
 	{
-		Config returnValue = new Config();
-
-		GroupConfig groupConfig = returnValue.getGroupConfig( );
-		groupConfig.setName( "braun" );
-		groupConfig.setPassword( "braun-passwd" );
-
-		NetworkConfig network = returnValue.getNetworkConfig();
-		JoinConfig join = network.getJoin();
-		join.getMulticastConfig().setEnabled( true );
-		join.getMulticastConfig().setMulticastPort( 54327 );
+		Config returnValue = new ClasspathXmlConfig( "hazelcast.xml" );
 
 		returnValue.setInstanceName( USER_MANAGEMENT_HZ_INSTANCE );
 
