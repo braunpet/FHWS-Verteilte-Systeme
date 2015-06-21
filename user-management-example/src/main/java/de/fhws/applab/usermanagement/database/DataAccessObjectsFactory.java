@@ -36,6 +36,11 @@ public class DataAccessObjectsFactory
 
 	}
 
+	public void shutdown()
+	{
+		this.distributedUserCache.shutdown();
+	}
+
 	public UserDAO createUserDAO( )
 	{
 		return this.distributedUserCache;

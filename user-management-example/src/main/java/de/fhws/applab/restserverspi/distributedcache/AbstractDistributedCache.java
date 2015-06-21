@@ -19,6 +19,11 @@ public abstract class AbstractDistributedCache<T extends AbstractModel>
 		this.distributedCache = this.hazelcastInstance.getMap( getDistributedMapName( ) );
 	}
 
+	protected void shutdown()
+	{
+		HazelcastWrapper.shutdown( );
+	}
+
 	protected abstract String getDistributedMapName();
 
 

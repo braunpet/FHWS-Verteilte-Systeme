@@ -68,4 +68,8 @@ public class MasterSlaveUserDAOImpl implements UserDAO
 		return new GetNumberOfUsers(this.persistency.getSlave() ).execute();
 	}
 
+	@Override public void shutdown( )
+	{
+		this.persistency.shutdown();
+	}
 }

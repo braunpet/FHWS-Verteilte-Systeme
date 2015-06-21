@@ -19,14 +19,6 @@ public abstract class AbstractMySqlPersistency implements IPersistency
 	protected static AbstractMySqlPersistency instance;
 
 
-	public static final void shutdown( )
-	{
-		if ( instance != null )
-		{
-			instance.close( );
-			instance = null;
-		}
-	}
 
 	private MySqlConfig configuration;
 
@@ -53,6 +45,12 @@ public abstract class AbstractMySqlPersistency implements IPersistency
 		createConnectionPool( );
 		createAllTables( deleteDatabase );
 	}
+
+	@Override public final void shutdown( )
+	{
+		this.close();
+	}
+
 
 	private void close( )
 	{

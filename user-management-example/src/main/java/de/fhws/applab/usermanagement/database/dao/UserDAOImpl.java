@@ -65,4 +65,9 @@ public class UserDAOImpl implements UserDAO
 	{
 		return new GetNumberOfUsers(this.persistency).execute();
 	}
+
+	@Override public void shutdown( )
+	{
+		this.persistency.shutdown();
+	}
 }

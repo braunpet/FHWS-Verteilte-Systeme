@@ -9,4 +9,6 @@ import java.sql.SQLException;
 public interface IPersistency
 {
 	Connection getConnection( ) throws SQLException;
+
+	void shutdown();
 }

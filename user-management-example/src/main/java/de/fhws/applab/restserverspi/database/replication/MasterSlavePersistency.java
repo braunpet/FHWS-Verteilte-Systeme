@@ -46,6 +46,16 @@ public class MasterSlavePersistency
 		}
 	}
 
+	public void shutdown()
+	{
+		this.master.shutdown();
+
+		for( IPersistency slave : this.slaves )
+		{
+			slave.shutdown();
+		}
+	}
+
 	public static class MasterSlavePersistencyBuilder
 	{
 		private IPersistency master;

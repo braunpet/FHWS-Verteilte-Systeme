@@ -68,5 +68,9 @@ public class DistributedUserCache extends AbstractDistributedCache<User> impleme
 		return "UserCache";
 	}
 
-
+	@Override public void shutdown( )
+	{
+		this.database.shutdown();
+		super.shutdown();
+	}
 }

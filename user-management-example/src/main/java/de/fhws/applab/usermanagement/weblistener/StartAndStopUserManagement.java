@@ -1,7 +1,7 @@
 package de.fhws.applab.usermanagement.weblistener;
 
 import de.fhws.applab.restserverspi.distributedcache.HazelcastWrapper;
-import de.fhws.applab.usermanagement.database.MySqlPersistency;
+import de.fhws.applab.usermanagement.database.DataAccessObjectsFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -16,12 +16,12 @@ public class StartAndStopUserManagement implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent event)
 	{
+		System.out.println("Starting Hazelcast ......" );
 		HazelcastWrapper.getHazelcastInstance();
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
-		HazelcastWrapper.shutdown();
-		MySqlPersistency.shutdown();
+		DataAccessObjectsFactory.getInstance().shutdown();
 	}
 }

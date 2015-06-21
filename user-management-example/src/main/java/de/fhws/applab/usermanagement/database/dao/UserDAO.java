@@ -22,4 +22,6 @@ public interface UserDAO
 	long getNumberOfUsers( ) throws DatabaseException;
 
 	void updatePassword( User user ) throws DatabaseException;
+
+	void shutdown();
 }
