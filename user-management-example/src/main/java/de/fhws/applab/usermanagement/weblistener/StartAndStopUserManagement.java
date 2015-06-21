@@ -1,7 +1,6 @@
 package de.fhws.applab.usermanagement.weblistener;
 
-import com.hazelcast.config.*;
-import com.hazelcast.core.Hazelcast;
+import de.fhws.applab.restserverspi.distributedcache.HazelcastWrapper;
 import de.fhws.applab.usermanagement.database.MySqlPersistency;
 
 import javax.servlet.ServletContextEvent;
@@ -14,27 +13,15 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class StartAndStopUserManagement implements ServletContextListener
 {
-	public static final String USER_MANAGEMENT_HZ_INSTANCE = "UserManagement-HazelcastInstance";
-
 	@Override
 	public void contextInitialized(ServletContextEvent event)
 	{
-		Hazelcast.getOrCreateHazelcastInstance( createHazelcastConfig( ) );
-		//Hazelcast.newHazelcastInstance();
+		HazelcastWrapper.getHazelcastInstance();
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
-		Hazelcast.getHazelcastInstanceByName( USER_MANAGEMENT_HZ_INSTANCE ).shutdown();
+		HazelcastWrapper.shutdown();
 		MySqlPersistency.shutdown();
-	}
-
-	private Config createHazelcastConfig()
-	{
-		Config returnValue = new ClasspathXmlConfig( "hazelcast.xml" );
-
-		returnValue.setInstanceName( USER_MANAGEMENT_HZ_INSTANCE );
-
-		return returnValue;
 	}
 }
