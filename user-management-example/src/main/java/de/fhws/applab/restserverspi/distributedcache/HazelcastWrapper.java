@@ -10,7 +10,7 @@ public class HazelcastWrapper
 {
 	private static HazelcastInstance INSTANCE = null;
 
-	public static HazelcastInstance getHazelcastInstance()
+	public static synchronized HazelcastInstance getHazelcastInstance()
 	{
 		if( INSTANCE == null )
 		{

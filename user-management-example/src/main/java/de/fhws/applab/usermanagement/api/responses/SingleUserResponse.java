@@ -6,20 +6,19 @@ import de.fhws.applab.usermanagement.api.filters.HttpBasicUserAuthorizationFilte
 import de.fhws.applab.usermanagement.database.DataAccessObjectsFactory;
 import de.fhws.applab.usermanagement.database.dao.UserDAO;
 import de.fhws.applab.usermanagement.models.User;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by braunpet on 14.06.15.
  */
 public class SingleUserResponse extends AbstractGetResponse
 {
-	private static final Logger LOGGER = Logger.getLogger( SingleUserResponse.class.getName() );
+	private static final Logger LOGGER = Logger.getLogger( SingleUserResponse.class );
 
 
 	public static SingleUserResponseBuilder1 newBuilder( UriInfo uriInfo )
@@ -119,7 +118,7 @@ public class SingleUserResponse extends AbstractGetResponse
 
 		@Override protected User loadFromDatabase( ) throws DatabaseException
 		{
-			LOGGER.log( Level.INFO, "Requesting user with id " + this.userId );
+			LOGGER.debug( "Requesting user with id " + this.userId );
 
 			UserDAO userDAO = DataAccessObjectsFactory.getInstance().createUserDAO();
 			return userDAO.loadUser( this.userId );
