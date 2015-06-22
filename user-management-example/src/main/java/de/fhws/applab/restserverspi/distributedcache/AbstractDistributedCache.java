@@ -21,7 +21,7 @@ public abstract class AbstractDistributedCache<T extends AbstractModel>
 
 	protected void shutdown()
 	{
-		
+
 	}
 
 	protected abstract String getDistributedMapName();

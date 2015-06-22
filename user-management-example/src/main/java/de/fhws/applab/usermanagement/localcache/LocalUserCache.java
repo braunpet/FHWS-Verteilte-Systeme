@@ -76,4 +76,9 @@ public class LocalUserCache extends AbstractLocalCache<User> implements UserDAO
 	{
 
 	}
+
+	@Override public void shutdown( )
+	{
+		
+	}
 }
