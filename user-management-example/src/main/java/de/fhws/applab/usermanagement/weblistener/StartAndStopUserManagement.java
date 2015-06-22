@@ -22,6 +22,8 @@ public class StartAndStopUserManagement implements ServletContextListener
 
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
+
 		DataAccessObjectsFactory.getInstance().shutdown();
+		HazelcastWrapper.shutdown();
 	}
 }
