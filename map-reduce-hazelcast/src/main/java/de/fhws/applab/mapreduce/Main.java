@@ -25,26 +25,27 @@ public class Main
 		initializeMap( hazelcastInstance );
 
 		ICompletableFuture<Map<String, Long>> future = startMapReduce( hazelcastInstance );
-		startTime = System.currentTimeMillis( );
 
-		waitForResult( future );
+		long duration = waitForResult( future );
 
-		stopTime = System.currentTimeMillis( );
-
-		System.out.println( "Duration: " + ( stopTime - startTime ) );
+		System.out.println( "Duration: " + duration );
 	}
 
-	private static void waitForResult( ICompletableFuture<Map<String, Long>> future )
+	private static long waitForResult( ICompletableFuture<Map<String, Long>> future )
 	{
+
 		try
 		{
+			startTime = System.currentTimeMillis( );
 			Map<String, Long> result = future.get( );
+			stopTime = System.currentTimeMillis( );
 
-			//System.out.println( "Result: " + result );
+			return ( stopTime - startTime );
 		}
 		catch ( Exception e )
 		{
 			e.printStackTrace( );
+			return 0;
 		}
 	}
 
@@ -66,39 +67,30 @@ public class Main
 	private static void initializeMap( HazelcastInstance hazelcastInstance )
 	{
 		IMap<String, String> data = hazelcastInstance.getMap( "input" );
-		int indexOfKey = 0;
 
-		InputStream inputStream = Main.class.getResourceAsStream( "/kant-krv-utf8.txt" );
-		String line;
+		putAllWordsOfEachLineInMap( data );
+	}
 
+	private static void putAllWordsOfEachLineInMap( IMap<String, String> data )
+	{
 		try
 		{
-			BufferedReader br = new BufferedReader( new InputStreamReader( inputStream ) );
+			final InputStream inputStream = Main.class.getResourceAsStream( "/kant-krv-utf8.txt" );
+			final BufferedReader br = new BufferedReader( new InputStreamReader( inputStream ) );
+			int indexOfKey = 0;
+			String line;
 
 			while ( ( line = br.readLine( ) ) != null )
 			{
-				String theKey = "KEY" + indexOfKey++;
 				if ( line.trim( ).isEmpty( ) == false )
 				{
-					//System.out.println( theKey + " -> " + line );
-					data.put( theKey, line );
+					data.put( "KEY" + indexOfKey++, line );
 				}
 			}
 		}
 		catch ( Exception e )
 		{
 			e.printStackTrace( );
-		}
-		finally
-		{
-			try
-			{
-				inputStream.close( );
-			}
-			catch ( Exception e )
-			{
-				e.printStackTrace( );
-			}
 		}
 	}
 
@@ -109,20 +101,17 @@ public class Main
 		@Override
 		public void map( String key, String document, Context<String, Long> context )
 		{
-			StringTokenizer tokenizer = new StringTokenizer( document.toLowerCase( ) );
+			final StringTokenizer tokenizer = new StringTokenizer( document.toLowerCase( ) );
+
 			while ( tokenizer.hasMoreTokens( ) )
 			{
-				String nextToken = tokenizer.nextToken( );
-				String trimmed = nextToken.replaceAll( "[\\.,()\\*]", "" );
-				context.emit( trimmed, ONE );
+				context.emit( tokenizer.nextToken( ).replaceAll( "[\\.,()\\*]", "" ), ONE );
 			}
 		}
 	}
 
-	static class WordCountCombinerFactory
-		implements CombinerFactory<String, Long, Long>
+	static class WordCountCombinerFactory implements CombinerFactory<String, Long, Long>
 	{
-
 		@Override
 		public Combiner<Long, Long> newCombiner( String key )
 		{
@@ -155,7 +144,6 @@ public class Main
 
 	static class WordCountReducerFactory implements ReducerFactory<String, Long, Long>
 	{
-
 		@Override
 		public Reducer<Long, Long> newReducer( String key )
 		{
@@ -179,5 +167,4 @@ public class Main
 			}
 		}
 	}
-
 }
