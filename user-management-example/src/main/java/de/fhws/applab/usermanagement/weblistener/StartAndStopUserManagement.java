@@ -16,7 +16,6 @@ public class StartAndStopUserManagement implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent event)
 	{
-		System.out.println("Starting Hazelcast ......" );
 		HazelcastWrapper.getHazelcastInstance();
 	}
 
