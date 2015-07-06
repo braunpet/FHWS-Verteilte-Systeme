@@ -17,7 +17,9 @@
 package de.fhws.applab.restserverspi.api.responses;
 
 import de.fhws.applab.restserverspi.database.DatabaseException;
+import de.fhws.applab.restserverspi.models.AbstractModel;
 
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -28,13 +30,17 @@ public abstract class AbstractGetResponse extends AbstractResponse
 	{
 	}
 
-	public abstract static class SingleResponseBuilder<T> extends AbstractResponse.AbstractResponseBuilder
+	public abstract static class SingleResponseBuilder<T extends AbstractModel>
+		extends AbstractResponse.AbstractResponseBuilder
 	{
 		protected T result;
 
-		protected SingleResponseBuilder( UriInfo uriInfo )
+		protected Request request;
+
+		protected SingleResponseBuilder( UriInfo uriInfo, Request request )
 		{
 			super( uriInfo );
+			this.request = request;
 		}
 
 		public final Response build( )
@@ -45,12 +51,19 @@ public abstract class AbstractGetResponse extends AbstractResponse
 
 				if ( this.result != null )
 				{
-					ResponseBuilder builder = Response.ok( this.result );
+					if ( isPreconditionMet( this.request, this.result ) == false )
+					{
+						return Response.notModified( ).build( );
+					}
+					else
+					{
+						ResponseBuilder builder = Response.ok( this.result );
 
-					addCacheControl( builder );
-					addAdditionalLinks( builder );
+						addCacheControl( builder );
+						addAdditionalLinks( builder );
 
-					return builder.build( );
+						return builder.build( );
+					}
 				}
 				else
 				{
@@ -71,5 +84,7 @@ public abstract class AbstractGetResponse extends AbstractResponse
 		}
 
 		protected abstract void addCacheControl( ResponseBuilder responseBuilder );
+
+		protected abstract boolean isPreconditionMet( Request request, T resultFromDatabase );
 	}
 }

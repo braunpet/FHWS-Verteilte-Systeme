@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.EntityTag;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -36,30 +37,33 @@ public class SingleUserResponse extends AbstractGetResponse
 {
 	private static final Logger LOGGER = Logger.getLogger( SingleUserResponse.class );
 
-	public static SingleUserResponseBuilder1 newBuilder( UriInfo uriInfo )
+	public static SingleUserResponseBuilder1 newBuilder( UriInfo uriInfo, Request request )
 	{
-		return new SingleUserResponseBuilder1( uriInfo );
+		return new SingleUserResponseBuilder1( uriInfo, request );
 	}
 
 	public static class SingleUserResponseBuilder1
 	{
 		protected UriInfo uriInfo;
 
-		protected SingleUserResponseBuilder1( UriInfo uriInfo )
+		protected Request request;
+
+		protected SingleUserResponseBuilder1( UriInfo uriInfo, Request request )
 		{
 			this.uriInfo = uriInfo;
+			this.request = request;
 		}
 
 		public SingleUserResponseBuilder2 forUserWithId( long userId )
 		{
-			return new SingleUserResponseBuilder2( this.uriInfo, userId );
+			return new SingleUserResponseBuilder2( this.uriInfo, this.request, userId );
 		}
 
 		public SingleUserResponseBuilder3 forRequestingUser( ContainerRequestContext requestContext )
 		{
 			Object requestingUser = requestContext.getProperty( HttpBasicUserAuthorizationFilter.PROP_USER_OBJECT );
 			User theUser = ( User ) requestingUser;
-			return new SingleUserResponseBuilder3( this.uriInfo, theUser );
+			return new SingleUserResponseBuilder3( this.uriInfo, this.request, theUser );
 		}
 	}
 
@@ -67,9 +71,9 @@ public class SingleUserResponse extends AbstractGetResponse
 	{
 		protected User senderOfTheRequest;
 
-		protected SingleUserResponseBuilder4( UriInfo uriInfo )
+		protected SingleUserResponseBuilder4( UriInfo uriInfo, Request request )
 		{
-			super( uriInfo );
+			super( uriInfo, request );
 		}
 
 		@Override protected void addAdditionalLinks( Response.ResponseBuilder builder )
@@ -97,6 +101,14 @@ public class SingleUserResponse extends AbstractGetResponse
 			responseBuilder.tag( eTag );
 		}
 
+		@Override protected boolean isPreconditionMet( Request request, User resultFromDatabase )
+		{
+			EntityTag currentETag = new EntityTag( Long.toString( this.result.getLastModifiedAt( ) ) );
+			Response.ResponseBuilder builder = request.evaluatePreconditions( currentETag );
+
+			return builder == null;
+		}
+
 		private void addSelfLink( Response.ResponseBuilder builder )
 		{
 			UserHyperlinks
@@ -121,9 +133,9 @@ public class SingleUserResponse extends AbstractGetResponse
 	{
 		private long userId;
 
-		protected SingleUserResponseBuilder2( UriInfo uriInfo, long userId )
+		protected SingleUserResponseBuilder2( UriInfo uriInfo, Request request, long userId )
 		{
-			super( uriInfo );
+			super( uriInfo, request );
 			this.userId = userId;
 		}
 
@@ -145,9 +157,9 @@ public class SingleUserResponse extends AbstractGetResponse
 
 	public static class SingleUserResponseBuilder3 extends SingleUserResponseBuilder4
 	{
-		protected SingleUserResponseBuilder3( UriInfo uriInfo, User requestingUser )
+		protected SingleUserResponseBuilder3( UriInfo uriInfo, Request request, User requestingUser )
 		{
-			super( uriInfo );
+			super( uriInfo, request );
 			this.senderOfTheRequest = requestingUser;
 		}
 

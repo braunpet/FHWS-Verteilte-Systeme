@@ -23,10 +23,7 @@ import de.fhws.applab.usermanagement.models.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 
 @Path( "/users" )
 @Api( value = "/users", description = "User Management API" )
@@ -37,6 +34,9 @@ public class UsersService
 
 	@Context
 	protected ContainerRequestContext requestContext;
+
+	@Context
+	protected Request request;
 
 	@GET
 	@Produces( MediaType.APPLICATION_JSON )
@@ -77,7 +77,7 @@ public class UsersService
 		@ApiParam( value = "The id of the user", required = true )
 		@PathParam( "id" ) long userId )
 	{
-		return SingleUserResponse.newBuilder( uriInfo ).forUserWithId( userId ).requestedByUser(
+		return SingleUserResponse.newBuilder( uriInfo, request ).forUserWithId( userId ).requestedByUser(
 			requestContext ).build( );
 	}
 
@@ -87,7 +87,7 @@ public class UsersService
 	@UserAuthorization
 	public Response getTheRequestingUser( )
 	{
-		return SingleUserResponse.newBuilder( uriInfo ).forRequestingUser( requestContext ).build( );
+		return SingleUserResponse.newBuilder( uriInfo, request ).forRequestingUser( requestContext ).build( );
 	}
 
 	@POST
