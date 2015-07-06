@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) peter.braun@fhws.de
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package de.fhws.applab.restserverspi.api.responses;
 
 import de.fhws.applab.restserverspi.database.DatabaseException;
@@ -11,9 +27,11 @@ import java.net.URI;
 public abstract class AbstractPostResponse extends AbstractResponse
 {
 	protected AbstractPostResponse( )
-	{}
+	{
+	}
 
-	public static abstract class AbstractPostResponseBuilder<T extends AbstractModel> extends AbstractResponse.AbstractResponseBuilder
+	public static abstract class AbstractPostResponseBuilder<T extends AbstractModel>
+		extends AbstractResponse.AbstractResponseBuilder
 	{
 		protected T modelToBeCreated;
 
@@ -31,13 +49,13 @@ public abstract class AbstractPostResponse extends AbstractResponse
 		@Override
 		public final Response build( )
 		{
-			if( createNewModel( this.modelToBeCreated ) )
+			if ( createNewModel( this.modelToBeCreated ) )
 			{
 				return Response.created( createdURI( ) ).build( );
 			}
 			else
 			{
-				return Response.serverError().build();
+				return Response.serverError( ).build( );
 			}
 		}
 
@@ -50,9 +68,9 @@ public abstract class AbstractPostResponse extends AbstractResponse
 				saveModelToDatabase( this.modelToBeCreated );
 				return true;
 			}
-			catch( Exception e )
+			catch ( Exception e )
 			{
-				e.printStackTrace();
+				e.printStackTrace( );
 				return false;
 			}
 		}
@@ -60,7 +78,7 @@ public abstract class AbstractPostResponse extends AbstractResponse
 		private URI createdURI( )
 		{
 			UriBuilder builder = uriInfo.getAbsolutePathBuilder( );
-			return builder.path( Long.toString(this.modelToBeCreated.getId()) ).build( );
+			return builder.path( Long.toString( this.modelToBeCreated.getId( ) ) ).build( );
 		}
 	}
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) peter.braun@fhws.de
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package de.fhws.applab.restserverspi.api.responses;
 
 import de.fhws.applab.restserverspi.database.DatabaseException;
@@ -13,7 +29,8 @@ public class AbstractUpdateResponse extends AbstractResponse
 		super( );
 	}
 
-	public abstract static class AbstractUpdateResponseBuilder<T extends AbstractModel> extends AbstractResponse.AbstractResponseBuilder
+	public abstract static class AbstractUpdateResponseBuilder<T extends AbstractModel>
+		extends AbstractResponse.AbstractResponseBuilder
 	{
 		protected long id;
 
@@ -41,7 +58,7 @@ public class AbstractUpdateResponse extends AbstractResponse
 		{
 			try
 			{
-				if( isUpdateAllowed() )
+				if ( isUpdateAllowed( ) )
 				{
 					updateDatabase( );
 
@@ -58,7 +75,7 @@ public class AbstractUpdateResponse extends AbstractResponse
 					return Response.status( Response.Status.FORBIDDEN ).build( );
 				}
 			}
-			catch( Exception e )
+			catch ( Exception e )
 			{
 				return Response.status( Response.Status.NOT_FOUND ).build( );
 			}
@@ -70,7 +87,7 @@ public class AbstractUpdateResponse extends AbstractResponse
 
 		protected abstract void updateDatabase( ) throws DatabaseException;
 
-		protected abstract boolean isUpdateAllowed() throws DatabaseException;
+		protected abstract boolean isUpdateAllowed( ) throws DatabaseException;
 	}
 
 }

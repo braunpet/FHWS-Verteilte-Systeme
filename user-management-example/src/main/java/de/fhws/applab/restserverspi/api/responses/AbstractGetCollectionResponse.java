@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) peter.braun@fhws.de
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package de.fhws.applab.restserverspi.api.responses;
 
 import de.fhws.applab.restserverspi.database.DatabaseException;
@@ -26,9 +42,11 @@ public abstract class AbstractGetCollectionResponse extends AbstractResponse
 	public static final String HEADER_TOTALNUMBEROFRESULTS = "X-totalnumberofresults";
 
 	protected AbstractGetCollectionResponse( )
-	{}
+	{
+	}
 
-	public abstract static class CollectionResponseBuilder<T extends AbstractModel> extends AbstractResponse.AbstractResponseBuilder
+	public abstract static class CollectionResponseBuilder<T extends AbstractModel>
+		extends AbstractResponse.AbstractResponseBuilder
 	{
 		private List<T> result;
 
@@ -43,7 +61,7 @@ public abstract class AbstractGetCollectionResponse extends AbstractResponse
 			super( uriInfo );
 		}
 
-		protected abstract Collection<T> loadFromDatabase() throws DatabaseException;
+		protected abstract Collection<T> loadFromDatabase( ) throws DatabaseException;
 
 		public final CollectionResponseBuilder<T> requestedOffsetWas( int offset )
 		{
@@ -62,10 +80,11 @@ public abstract class AbstractGetCollectionResponse extends AbstractResponse
 		{
 			try
 			{
-				this.result = new LinkedList<T>( loadFromDatabase() );
+				this.result = new LinkedList<T>( loadFromDatabase( ) );
 				this.totalNumberOfResults = this.result.size( );
 
-				ResponseBuilder builder = Response.ok( Pager.page( this.result, this.offsetFromRequest, this.sizeFromRequest ) );
+				ResponseBuilder builder =
+					Response.ok( Pager.page( this.result, this.offsetFromRequest, this.sizeFromRequest ) );
 
 				addCacheControl( builder );
 				addSelfLink( builder );
@@ -77,29 +96,29 @@ public abstract class AbstractGetCollectionResponse extends AbstractResponse
 
 				return builder.build( );
 			}
-			catch( Exception e )
+			catch ( Exception e )
 			{
-				e.printStackTrace();
-				return Response.serverError().build();
+				e.printStackTrace( );
+				return Response.serverError( ).build( );
 			}
 		}
 
 		private void addCacheControl( ResponseBuilder responseBuilder )
 		{
-			CacheControl cacheControl = new CacheControl();
+			CacheControl cacheControl = new CacheControl( );
 			cacheControl.setNoCache( true );
 			cacheControl.setNoStore( true );
 			responseBuilder.cacheControl( cacheControl );
 		}
 
 		protected void _build( ResponseBuilder builder )
-		{}
+		{
+		}
 
 		private void addSelfLink( ResponseBuilder builder )
 		{
 			builder.link( getSelfUri( uriInfo ), RelationTypes.REL_TYPE_SELF );
 		}
-
 
 		private void addPrevLink( ResponseBuilder builder )
 		{
@@ -138,7 +157,6 @@ public abstract class AbstractGetCollectionResponse extends AbstractResponse
 
 			return uriBuilder.build( this.offsetFromRequest, this.sizeFromRequest );
 		}
-
 
 		private URI getPrevUri( UriInfo uriInfo )
 		{

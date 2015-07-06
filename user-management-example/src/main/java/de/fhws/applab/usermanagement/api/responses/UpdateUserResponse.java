@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) peter.braun@fhws.de
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package de.fhws.applab.usermanagement.api.responses;
 
 import de.fhws.applab.restserverspi.api.responses.AbstractUpdateResponse;
@@ -33,7 +49,7 @@ public class UpdateUserResponse extends AbstractUpdateResponse
 		public UpdateUserResponseBuilder requestedByUser( ContainerRequestContext requestContext )
 		{
 			Object requestingUser = requestContext.getProperty( HttpBasicUserAuthorizationFilter.PROP_USER_OBJECT );
-			this.senderOfTheRequest = (User )requestingUser;
+			this.senderOfTheRequest = ( User ) requestingUser;
 			return this;
 		}
 
@@ -45,18 +61,19 @@ public class UpdateUserResponse extends AbstractUpdateResponse
 		@Override protected void updateDatabase( ) throws DatabaseException
 		{
 			UserDAO userDAO = DataAccessObjectsFactory.getInstance( ).createUserDAO( );
-			this.modelToBeUpdated.setLastModifiedAt( System.currentTimeMillis() );
+			this.modelToBeUpdated.setLastModifiedAt( System.currentTimeMillis( ) );
 			userDAO.updateUser( this.modelToBeUpdated );
 		}
 
 		@Override protected boolean isUpdateAllowed( ) throws DatabaseException
 		{
-			return this.senderOfTheRequest.getId() == this.id;
+			return this.senderOfTheRequest.getId( ) == this.id;
 		}
 
 		@Override protected void addSelfLink( Response.ResponseBuilder builder )
 		{
-			UserHyperlinks.addLinkWithRelType( this.uriInfo, builder, UserRelationTypes.REL_TYPE_SELF, this.modelToBeUpdated.getId() );
+			UserHyperlinks.addLinkWithRelType( this.uriInfo, builder, UserRelationTypes.REL_TYPE_SELF,
+				this.modelToBeUpdated.getId( ) );
 		}
 	}
 }
