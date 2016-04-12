@@ -38,6 +38,7 @@ public class Main
 		{
 			startTime = System.currentTimeMillis( );
 			Map<String, Long> result = future.get( );
+			System.out.println( result );
 			stopTime = System.currentTimeMillis( );
 
 			return ( stopTime - startTime );
