@@ -8,7 +8,7 @@ import de.fhws.fiw.applab.pvs.week02.utils.InitializeArray;
 
 public class Main
 {
-	private static final int ARRAY_SIZE = 3000;
+	private static final int ARRAY_SIZE = 20;
 
 	private static final int[] ARRAY = InitializeArray.initializeArray( ARRAY_SIZE );
 

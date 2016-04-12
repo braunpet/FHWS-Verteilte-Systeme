@@ -11,8 +11,8 @@ import java.util.concurrent.*;
  */
 public class SumParallelUsingExecutorService extends Measurement
 {
-	private static final int NUMBER_OF_PARALLEL_THREADS = 4;
-	private static final int NUMBER_OF_CHUNKS = 10;
+	private static final int NUMBER_OF_PARALLEL_THREADS = Runtime.getRuntime( ).availableProcessors( );
+	private static final int NUMBER_OF_CHUNKS = Runtime.getRuntime( ).availableProcessors( );
 
 	private int[] array;
 
@@ -34,11 +34,13 @@ public class SumParallelUsingExecutorService extends Measurement
 	private SumWorker[] createThreadsForChunks( )
 	{
 		final SumWorker[] threads = new SumWorker[ NUMBER_OF_CHUNKS ];
-		final int chunkSize = this.array.length / NUMBER_OF_CHUNKS;
+		final float chunkSize = ( float ) this.array.length / NUMBER_OF_CHUNKS;
 
 		for ( int i = 0; i < NUMBER_OF_CHUNKS; i++ )
 		{
-			threads[ i ] = new SumWorker( this.array, i * chunkSize, chunkSize );
+			final int from = Math.round( i * chunkSize );
+			final int size = Math.round( ( i + 1 ) * chunkSize ) - from;
+			threads[ i ] = new SumWorker( this.array, from, size );
 		}
 		return threads;
 	}
