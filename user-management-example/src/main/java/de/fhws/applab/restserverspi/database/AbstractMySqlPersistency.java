@@ -1,9 +1,25 @@
+/*
+ * Copyright (c) peter.braun@fhws.de
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package de.fhws.applab.restserverspi.database;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import de.fhws.applab.restserverspi.database.config.MySqlConfig;
 import de.fhws.applab.restserverspi.database.tables.AbstractTable;
 import de.fhws.applab.usermanagement.database.config.DefaultMySqlConfig;
-import de.fhws.applab.restserverspi.database.config.MySqlConfig;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,8 +33,6 @@ public abstract class AbstractMySqlPersistency implements IPersistency
 	private static String DATABASE_PORT = "3306";
 
 	protected static AbstractMySqlPersistency instance;
-
-
 
 	private MySqlConfig configuration;
 
@@ -48,9 +62,8 @@ public abstract class AbstractMySqlPersistency implements IPersistency
 
 	@Override public final void shutdown( )
 	{
-		this.close();
+		this.close( );
 	}
-
 
 	private void close( )
 	{
@@ -61,7 +74,7 @@ public abstract class AbstractMySqlPersistency implements IPersistency
 	{
 		Connection con = null;
 		final List<AbstractTable> tables = new LinkedList<AbstractTable>( );
-		tables.addAll( getAllTables() );
+		tables.addAll( getAllTables( ) );
 
 		try
 		{
@@ -92,9 +105,9 @@ public abstract class AbstractMySqlPersistency implements IPersistency
 		}
 	}
 
-	protected abstract Set<AbstractTable> getAllTables();
+	protected abstract Set<AbstractTable> getAllTables( );
 
-	protected abstract String getDatabaseName();
+	protected abstract String getDatabaseName( );
 
 	@Override public final Connection getConnection( ) throws SQLException
 	{
@@ -108,10 +121,11 @@ public abstract class AbstractMySqlPersistency implements IPersistency
 			Class.forName( COM_MYSQL_JDBC_DRIVER );
 			this.cpds = new ComboPooledDataSource( );
 			cpds.setDriverClass( COM_MYSQL_JDBC_DRIVER );
-			cpds.setJdbcUrl( "jdbc:mysql://" + this.configuration.getDbHost( ) + ":" + DATABASE_PORT + "/" + getDatabaseName() );
+			cpds.setJdbcUrl(
+				"jdbc:mysql://" + this.configuration.getDbHost( ) + ":" + DATABASE_PORT + "/" + getDatabaseName( ) );
 			cpds.setUser( this.configuration.getDbUser( ) );
 			cpds.setPassword( this.configuration.getDbPassword( ) );
-			cpds.setTestConnectionOnCheckout(true);
+			cpds.setTestConnectionOnCheckout( true );
 			cpds.setMinPoolSize( 5 );
 			cpds.setAcquireIncrement( 5 );
 			cpds.setMaxPoolSize( 50 );

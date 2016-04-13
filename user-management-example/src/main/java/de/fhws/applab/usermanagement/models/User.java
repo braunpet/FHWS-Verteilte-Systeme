@@ -1,11 +1,27 @@
+/*
+ * Copyright (c) peter.braun@fhws.de
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package de.fhws.applab.usermanagement.models;
 
 import com.owlike.genson.annotation.JsonConverter;
 import com.owlike.genson.annotation.JsonIgnore;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
-import de.fhws.applab.restserverspi.models.AbstractModel;
 import de.fhws.applab.restserverspi.api.converters.LinkConverter;
+import de.fhws.applab.restserverspi.models.AbstractModel;
 import org.glassfish.jersey.linking.InjectLink;
 
 import javax.ws.rs.core.Link;
@@ -27,7 +43,8 @@ public class User extends AbstractModel
 	private Link selfUri;
 
 	public User( )
-	{}
+	{
+	}
 
 	public User( String firstName, String lastName )
 	{
@@ -63,7 +80,7 @@ public class User extends AbstractModel
 		return emailAddress;
 	}
 
-	@ApiModelProperty( value = "Email address", dataType = "String", required = true, notes = "Email address must be unique")
+	@ApiModelProperty( value = "Email address", dataType = "String", required = true, notes = "Email address must be unique" )
 	public void setEmailAddress( String emailAddress )
 	{
 		this.emailAddress = emailAddress;

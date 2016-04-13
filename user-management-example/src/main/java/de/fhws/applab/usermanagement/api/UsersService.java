@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) peter.braun@fhws.de
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package de.fhws.applab.usermanagement.api;
 
 import com.wordnik.swagger.annotations.*;
@@ -7,13 +23,10 @@ import de.fhws.applab.usermanagement.models.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 
 @Path( "/users" )
-@Api(value = "/users", description = "User Management API")
+@Api( value = "/users", description = "User Management API" )
 public class UsersService
 {
 	@Context
@@ -21,6 +34,9 @@ public class UsersService
 
 	@Context
 	protected ContainerRequestContext requestContext;
+
+	@Context
+	protected Request request;
 
 	@GET
 	@Produces( MediaType.APPLICATION_JSON )
@@ -43,7 +59,7 @@ public class UsersService
 		return GetAllUsersResponse.newBuilder( uriInfo )
 			.requestedOffsetWas( offset )
 			.requestedSizeWas( size )
-			.build();
+			.build( );
 	}
 
 	@GET
@@ -61,7 +77,7 @@ public class UsersService
 		@ApiParam( value = "The id of the user", required = true )
 		@PathParam( "id" ) long userId )
 	{
-		return SingleUserResponse.newBuilder( uriInfo ).forUserWithId( userId ).requestedByUser(
+		return SingleUserResponse.newBuilder( uriInfo, request ).forUserWithId( userId ).requestedByUser(
 			requestContext ).build( );
 	}
 
@@ -71,14 +87,14 @@ public class UsersService
 	@UserAuthorization
 	public Response getTheRequestingUser( )
 	{
-		return SingleUserResponse.newBuilder( uriInfo ).forRequestingUser( requestContext ).build();
+		return SingleUserResponse.newBuilder( uriInfo, request ).forRequestingUser( requestContext ).build( );
 	}
 
 	@POST
 	@Consumes( MediaType.APPLICATION_JSON )
 	public Response createUser( User user )
 	{
-		return CreateNewUserResponse.newBuilder( uriInfo ).withNewModel( user ).build();
+		return CreateNewUserResponse.newBuilder( uriInfo ).withNewModel( user ).build( );
 	}
 
 	@PUT
@@ -87,7 +103,8 @@ public class UsersService
 	@UserAuthorization
 	public Response updateUser( @PathParam( "id" ) long userId, User user )
 	{
-		return UpdateUserResponse.newBuilder( uriInfo ).requestedByUser( this.requestContext ).update( userId ).withNewModel( user ).build( );
+		return UpdateUserResponse.newBuilder( uriInfo ).requestedByUser( this.requestContext ).update( userId )
+			.withNewModel( user ).build( );
 	}
 
 	@DELETE
@@ -95,7 +112,8 @@ public class UsersService
 	@UserAuthorization
 	public Response deleteUser( @PathParam( "id" ) long userId )
 	{
-		return DeleteUserResponse.newBuilder( uriInfo ).requestedByUser( this.requestContext ).delete( userId ).build( );
+		return DeleteUserResponse.newBuilder( uriInfo ).requestedByUser( this.requestContext ).delete( userId )
+			.build( );
 	}
 
 }
