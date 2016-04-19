@@ -4,7 +4,7 @@ import de.fhws.fiw.applab.pvs.week02.utils.Measurement;
 
 import java.util.concurrent.ForkJoinPool;
 
-public class SearchParallelUsingForkJoin extends Measurement
+public class ParallelSortUsingForkJoin extends Measurement
 {
 	private int[] array;
 
@@ -12,7 +12,7 @@ public class SearchParallelUsingForkJoin extends Measurement
 
 	private int valueToSearchFor;
 
-	public SearchParallelUsingForkJoin( final int[] array, final int valueToSearchFor )
+	public ParallelSortUsingForkJoin( final int[] array, final int valueToSearchFor )
 	{
 		this.array = array;
 		this.valueToSearchFor = valueToSearchFor;
