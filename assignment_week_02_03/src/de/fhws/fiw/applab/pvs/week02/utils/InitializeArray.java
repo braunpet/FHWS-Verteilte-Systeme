@@ -14,4 +14,19 @@ public class InitializeArray
 		}
 		return array;
 	}
+
+	public static int[] initializeArrayRandomly( final int n, final int limit )
+	{
+		final int[] array = new int[ n ];
+		for ( int i = 0; i < n; i++ )
+		{
+			array[ i ] = randomInt( limit );
+		}
+		return array;
+	}
+
+	private static int randomInt( final int limit )
+	{
+		return Math.round( ( ( float ) Math.random( ) * limit ) );
+	}
 }
